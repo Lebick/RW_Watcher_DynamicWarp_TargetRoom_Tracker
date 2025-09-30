@@ -24,6 +24,8 @@ public partial class LevicksSeedTest
 
     private static new ManualLogSource Logger;
 
+    private static bool spreadingRot;
+
     private void SetInit(ManualLogSource logger)
     {
         Logger = logger;
@@ -45,7 +47,8 @@ public partial class LevicksSeedTest
 
         AbstractRoom room = game.Players[0].Room;
 
-        normalMapList = Watcher.WarpPoint.GetAvailableDynamicWarpTargets(room.world, room.name, null, false);
+        normalMapList = Watcher.WarpPoint.GetAvailableDynamicWarpTargets(room.world, room.name, null, spreadingRot);
+        normalMapList.Sort();
 
         List<string> allowLists = new();
 
@@ -71,6 +74,7 @@ public partial class LevicksSeedTest
         AbstractRoom room = game.Players[0].Room;
 
         badMapList = Watcher.WarpPoint.GetAvailableBadWarpTargets(room.world, room.name);
+        badMapList.Sort();
 
         List<string> allowLists = new();
 
@@ -117,9 +121,10 @@ public partial class LevicksSeedTest
 
         public UIContainer(Menu.Menu menu, MenuObject owner, Vector2 pos, Vector2 size) : base(menu, owner, pos, size)
         {
-            isShowBadWarpMenu = false;
-
             game = (menu as PauseMenu).game;
+
+            isShowBadWarpMenu = false;
+            spreadingRot = Region.IsSentientRotRegion(game.world.name) || game.GetStorySession.pendingSentientRotInfectionFromWarp || game.Players[0].Room.realizedRoom.roomSettings.GetEffectAmount(Watcher.WatcherEnums.RoomEffectType.SentientRotInfection) > 0f;
 
             currentSeed = game.rainWorld.progression.miscProgressionData.watcherCampaignSeed;
             normalWarpCreateCount = game.GetStorySession.saveState.miscWorldSaveData.numberOfWarpPointsGenerated;
@@ -175,7 +180,8 @@ public partial class LevicksSeedTest
 
             string seedText = $"{Translator("currentSeed")} = {currentSeed}\n  > {(
                 isShowBadWarpMenu ? $"{Translator("badWarpSeed")} = {currentSeed + badWarpCreateCount}"
-                : $"{Translator("normalWarpSeed")} = {currentSeed + normalWarpCreateCount}")}";
+                : $"{Translator("normalWarpSeed")} = {currentSeed + normalWarpCreateCount}")}\n" +
+                $"isRotSpread = {(spreadingRot ? "true" : "false")}";
 
             seedLabel = new MenuLabel(
                 menu,
@@ -226,7 +232,8 @@ public partial class LevicksSeedTest
 
             string seedText = $"{Translator("currentSeed")} = {currentSeed}\n  > {(
                 isShowBadWarpMenu ? $"{Translator("badWarpSeed")} = {currentSeed + badWarpCreateCount}"
-                : $"{Translator("normalWarpSeed")} = {currentSeed + normalWarpCreateCount}")}";
+                : $"{Translator("normalWarpSeed")} = {currentSeed + normalWarpCreateCount}")}\n" +
+                $"isRotSpread = {(spreadingRot ? "true" : "false")}";
 
             seedLabel.text = seedText;
         }
@@ -264,6 +271,8 @@ public partial class LevicksSeedTest
         private string GetNormalDynamicTarget()
         {
             UnityEngine.Random.State wasState = UnityEngine.Random.state;
+
+            
 
             UnityEngine.Random.InitState(currentSeed + normalWarpCreateCount);
             string map = normalMapList[UnityEngine.Random.Range(0, normalMapList.Count)];

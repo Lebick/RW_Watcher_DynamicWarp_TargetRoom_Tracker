@@ -181,7 +181,7 @@ public partial class LevicksSeedTest
             string seedText = $"{Translator("currentSeed")} = {currentSeed}\n  > {(
                 isShowBadWarpMenu ? $"{Translator("badWarpSeed")} = {currentSeed + badWarpCreateCount}"
                 : $"{Translator("normalWarpSeed")} = {currentSeed + normalWarpCreateCount}")}\n" +
-                $"isRotSpread = {(spreadingRot ? "true" : "false")}";
+                $"{Translator("isRotSpread")} = {(spreadingRot ? "true" : "false")}";
 
             seedLabel = new MenuLabel(
                 menu,
@@ -233,7 +233,7 @@ public partial class LevicksSeedTest
             string seedText = $"{Translator("currentSeed")} = {currentSeed}\n  > {(
                 isShowBadWarpMenu ? $"{Translator("badWarpSeed")} = {currentSeed + badWarpCreateCount}"
                 : $"{Translator("normalWarpSeed")} = {currentSeed + normalWarpCreateCount}")}\n" +
-                $"isRotSpread = {(spreadingRot ? "true" : "false")}";
+                $"{Translator("isRotSpread")} = {(spreadingRot ? "true" : "false")}";
 
             seedLabel.text = seedText;
         }

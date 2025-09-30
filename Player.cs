@@ -207,8 +207,8 @@ public partial class LevicksSeedTest
 
             if (isShowBadWarpMenu)
             {
-                roomDropDown.AddItems(false, badRegs.ToArray());
-                roomDropDown.RemoveItems(false, values.ToArray());
+                roomDropDown.AddItems(true, badRegs.ToArray());
+                roomDropDown.RemoveItems(true, values.ToArray());
 
                 desc2.text = $"{Translator("badDynamicTargetRoom")} = {GetBadDynamicTarget()}";
 
@@ -216,8 +216,8 @@ public partial class LevicksSeedTest
             }
             else
             {
-                roomDropDown.AddItems(false, normalRegs.ToArray());
-                roomDropDown.RemoveItems(false, values.ToArray());
+                roomDropDown.AddItems(true, normalRegs.ToArray());
+                roomDropDown.RemoveItems(true, values.ToArray());
 
                 desc2.text = $"{Translator("normalDynamicTargetRoom")} = {GetNormalDynamicTarget()}";
 
